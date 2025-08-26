@@ -98,11 +98,11 @@ const APIKeyManager = () => {
       <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
         <h4 className="font-medium text-gray-900 mb-2">How to get your API key:</h4>
         <ol className="text-sm text-gray-600 space-y-1">
-          <li>1. Go to <a href="https://openrouter.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">OpenRouter.ai</a></li>
-          <li>2. Sign up or log in to your account</li>
-          <li>3. Navigate to the API Keys section</li>
-          <li>4. Create a new API key</li>
-          <li>5. Copy and paste it above</li>
+          <li> Go to <a href="https://openrouter.ai" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">OpenRouter.ai</a></li>
+          <li> Sign up or log in to your account</li>
+          <li> Navigate to the API Keys section</li>
+          <li> Create a new API key</li>
+          <li> Copy and paste it above</li>
         </ol>
         <p className="text-xs text-gray-500 mt-2">
           Your API key is stored locally and never shared with third parties.
