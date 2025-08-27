@@ -76,13 +76,17 @@ const Header = () => {
                 setShowSettings(true);
                 console.log('Settings should now be visible');
               }}
-              className="flex items-center justify-center w-10 h-10 text-gray-600 hover:text-gray-900 hover:bg-gray-100 
-                rounded-lg transition-all duration-200 relative overflow-hidden group"
+              className="settings-icon-glow flex items-center justify-center w-12 h-12 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700
+                rounded-xl transition-all duration-200 relative overflow-hidden group border-2 border-transparent hover:border-blue-200 dark:hover:border-blue-600
+                shadow-sm hover:shadow-lg transform hover:scale-105 active:scale-95"
               title="Settings"
             >
-              <SettingsIcon className="w-5 h-5" />
+              <SettingsIcon className="w-7 h-7 transition-transform duration-200 group-hover:rotate-45" />
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-500 opacity-0 
-                group-hover:opacity-10 transition-opacity duration-200 rounded-lg"></div>
+                group-hover:opacity-15 transition-opacity duration-200 rounded-xl"></div>
+              {/* Subtle glow effect */}
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 
+                group-hover:opacity-100 transition-all duration-300 blur-sm scale-110"></div>
             </button>
             
             {/* Theme Toggle */}

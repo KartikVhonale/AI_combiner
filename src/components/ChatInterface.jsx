@@ -331,9 +331,9 @@ const ChatInterface = () => {
   const canSubmit = inputMessage.trim() && state.selectedModels.length > 0 && !isGenerating && state.isApiKeyValid;
 
   return (
-    <div className="chat-interface flex flex-col h-full">
+    <div className="chat-interface flex flex-col h-full border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-lg rounded-lg overflow-hidden">
       {/* Messages Area */}
-      <div className="messages-container flex-1 overflow-y-auto p-2 md:p-4 space-y-3 md:space-y-4 scrollable">
+      <div className="messages-container flex-1 overflow-y-auto p-2 md:p-4 space-y-3 md:space-y-4 scrollable border-b-2 border-gray-100 dark:border-gray-800">
         {state.messages.length === 0 ? (
           <div className="empty-state text-center py-8 md:py-12">
             <div className="text-gray-400 text-base md:text-lg mb-4">
@@ -604,7 +604,7 @@ const ChatInterface = () => {
       </div>
 
       {/* Input Area */}
-      <div className="input-area border-t border-gray-200 p-3 md:p-4 mobile-safe-bottom">
+      <div className="input-area border-t-2 border-gray-200 dark:border-gray-700 p-3 md:p-4 mobile-safe-bottom bg-gray-50 dark:bg-gray-800/50 backdrop-blur-sm">
         <form onSubmit={handleSubmit} className="input-container">
           <div className="flex-1 relative">
             <textarea
@@ -617,9 +617,10 @@ const ChatInterface = () => {
                 state.selectedModels.length === 0 ? 'Please select models first...' :
                 'Type your message... (Press Enter to send, Shift+Enter for new line)'
               }
-              className="w-full px-3 md:px-4 py-2 md:py-3 pr-12 border border-gray-300 rounded-lg resize-none 
-                focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none 
-                text-sm md:text-base min-h-[44px] custom-scrollbar"
+              className="w-full px-3 md:px-4 py-2 md:py-3 pr-12 border-2 border-gray-300 dark:border-gray-600 rounded-lg resize-none 
+                focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:border-blue-400 outline-none 
+                text-sm md:text-base min-h-[44px] custom-scrollbar bg-white dark:bg-gray-700
+                shadow-sm hover:shadow-md transition-all duration-200"
               rows={Math.min(Math.max(1, inputMessage.split('\n').length), window.innerWidth < 768 ? 3 : 5)}
               disabled={isGenerating}
             />
