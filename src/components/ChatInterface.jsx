@@ -331,21 +331,21 @@ const ChatInterface = () => {
   const canSubmit = inputMessage.trim() && state.selectedModels.length > 0 && !isGenerating && state.isApiKeyValid;
 
   return (
-    <div className="chat-interface flex flex-col h-full border-2 border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-lg rounded-lg overflow-hidden">
-      {/* Messages Area */}
-      <div className="messages-container flex-1 overflow-y-auto p-2 md:p-4 space-y-3 md:space-y-4 scrollable border-b-2 border-gray-100 dark:border-gray-800">
+    <div className="chat-interface">
+      {/* Messages Area - Perfect Scrolling */}
+      <div className="messages-container">
         {state.messages.length === 0 ? (
-          <div className="empty-state text-center py-8 md:py-12">
-            <div className="text-gray-400 text-base md:text-lg mb-4">
+          <div className="empty-state">
+            <div className="text-gray-400 text-sm md:text-lg mb-4">
               👋 Welcome! {state.conversations.length > 0 ? 'Continue your conversation or start a new one' : 'Start a conversation with AI models'}
             </div>
-            <div className="text-gray-500 text-xs md:text-sm px-4 mb-6">
-              {!state.isApiKeyValid && 'Please enter your API key first'}
-              {state.isApiKeyValid && state.selectedModels.length === 0 && 'Select models to get started'}
+            <div className="text-gray-500 text-xs md:text-sm px-2 mb-6">
+              {!state.isApiKeyValid && '⚠️ Please enter your API key first'}
+              {state.isApiKeyValid && state.selectedModels.length === 0 && '🔧 Select models to get started'}
               {state.isApiKeyValid && state.selectedModels.length > 0 && (
                 state.conversations.length > 0 
-                  ? 'Your conversation history is automatically saved. Type your message below to continue.'
-                  : 'Type your message below to start your first conversation'
+                  ? '💬 Your conversation history is automatically saved. Type your message below to continue.'
+                  : '🚀 Type your message below to start your first conversation'
               )}
             </div>
             
@@ -603,8 +603,8 @@ const ChatInterface = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Area */}
-      <div className="input-area border-t-2 border-gray-200 dark:border-gray-700 p-3 md:p-4 mobile-safe-bottom bg-gray-50 dark:bg-gray-800/50 backdrop-blur-sm">
+      {/* Input Area - Professional No-Padding Design */}
+      <div className="input-area">
         <form onSubmit={handleSubmit} className="input-container">
           <div className="flex-1 relative">
             <textarea
@@ -615,12 +615,9 @@ const ChatInterface = () => {
               placeholder={
                 !state.isApiKeyValid ? 'Please enter API key first...' :
                 state.selectedModels.length === 0 ? 'Please select models first...' :
-                'Type your message... (Press Enter to send, Shift+Enter for new line)'
+                window.innerWidth < 768 ? 'Type your message...' : 'Type your message... (Press Enter to send, Shift+Enter for new line)'
               }
-              className="w-full px-3 md:px-4 py-2 md:py-3 pr-12 border-2 border-gray-300 dark:border-gray-600 rounded-lg resize-none 
-                focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:border-blue-400 outline-none 
-                text-sm md:text-base min-h-[44px] custom-scrollbar bg-white dark:bg-gray-700
-                shadow-sm hover:shadow-md transition-all duration-200"
+              className="chat-textarea"
               rows={Math.min(Math.max(1, inputMessage.split('\n').length), window.innerWidth < 768 ? 3 : 5)}
               disabled={isGenerating}
             />
@@ -629,36 +626,34 @@ const ChatInterface = () => {
           <button
             type="submit"
             disabled={!canSubmit}
-            className={`send-button ${!canSubmit ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className="send-button"
           >
             {isGenerating ? (
               <Loader className="w-4 h-4 md:w-5 md:h-5 animate-spin" />
             ) : (
               <Send className="w-4 h-4 md:w-5 md:h-5" />
             )}
-            <span className="hidden sm:inline ml-2 font-medium">
+            <span className="hidden sm:inline">
               {isGenerating ? 'Sending...' : 'Send'}
             </span>
           </button>
         </form>
         
         {state.selectedModels.length > 0 && (
-          <div className="mt-3 text-xs text-gray-500">
+          <div className="model-status">
             <div className="flex items-center gap-2 flex-wrap mb-2">
-              <span className="font-medium">Active models:</span>
+              <span className="font-medium text-sm">Active models:</span>
               <div className="flex gap-1 flex-wrap">
                 {state.selectedModels.map(id => {
                   const model = state.availableModels.find(m => m.id === id);
                   return (
-                    <span key={id} className={`px-2 py-1 rounded-full text-xs font-medium transition-all ${
-                      model?.isFree 
-                        ? 'bg-green-100 text-green-700 border border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800'
-                        : 'bg-purple-100 text-purple-700 border border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-800'
+                    <span key={id} className={`model-tag ${
+                      model?.isFree ? 'model-tag-free' : 'model-tag-paid'
                     }`}>
                       {model ? model.name : getModelName(id)}
                       {model && (
-                        <span className={`ml-1 w-1.5 h-1.5 rounded-full inline-block ${
-                          model.isFree ? 'bg-green-500' : 'bg-purple-500'
+                        <span className={`status-dot ${
+                          model.isFree ? 'status-dot-free' : 'status-dot-paid'
                         }`}></span>
                       )}
                     </span>
@@ -666,16 +661,16 @@ const ChatInterface = () => {
                 })}
               </div>
             </div>
-            {state.conversations.length > 0 && (
-              <div className="flex items-center gap-2 text-xs text-gray-400">
+            {/* {state.conversations.length > 0 && (
+              <div className="conversation-status">
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
                   <span>Conversation history: {state.conversations.length} saved conversations</span>
                 </div>
-                •
+                <span>•</span>
                 <span>Auto-saved to local storage</span>
               </div>
-            )}
+            )} */}
           </div>
         )}
       </div>

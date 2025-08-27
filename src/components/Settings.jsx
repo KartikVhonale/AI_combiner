@@ -27,12 +27,25 @@ const Settings = ({ onClose }) => {
   const { theme, setLightTheme, setDarkTheme, setSystemTheme, isDark } = useTheme();
   const [activeTab, setActiveTab] = useState('models');
   const [preferences, setPreferences] = useState(state.userPreferences);
+  const [showSettings, setShowSettings] = useState(false);
+
+  // Animation control
+  React.useEffect(() => {
+    setShowSettings(true);
+  }, []);
+
+  const handleClose = () => {
+    setShowSettings(false);
+    setTimeout(() => {
+      onClose();
+    }, 300); // Wait for animation to complete
+  };
 
   // Handle escape key to close modal
   React.useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
-        onClose();
+        handleClose();
       }
     };
 
@@ -40,14 +53,75 @@ const Settings = ({ onClose }) => {
     return () => {
       document.removeEventListener('keydown', handleEscape);
     };
-  }, [onClose]);
+  }, []);
 
-  // Handle backdrop click
+  // Handle backdrop click with enhanced mobile support
   const handleBackdropClick = (e) => {
+    // Ensure we're clicking the backdrop, not its children
     if (e.target === e.currentTarget) {
-      onClose();
+      e.preventDefault();
+      e.stopPropagation();
+      handleClose();
     }
   };
+
+  // Enhanced mobile touch handlers
+  const handleBackdropTouch = (e) => {
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+      e.stopPropagation();
+      handleClose();
+    }
+  };
+
+  // Prevent sidebar content from closing when clicked
+  const handleSidebarClick = (e) => {
+    e.stopPropagation();
+  };
+
+  // Handle swipe to close on mobile
+  React.useEffect(() => {
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+
+    const handleTouchStart = (e) => {
+      if (window.innerWidth <= 640 && showSettings) {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+      }
+    };
+
+    const handleTouchMove = (e) => {
+      if (!isDragging) return;
+      currentX = e.touches[0].clientX;
+      const deltaX = currentX - startX;
+      
+      // If swiping right (closing direction) and swipe is significant
+      if (deltaX > 50) {
+        handleClose();
+        isDragging = false;
+      }
+    };
+
+    const handleTouchEnd = () => {
+      isDragging = false;
+      startX = 0;
+      currentX = 0;
+    };
+
+    if (showSettings) {
+      document.addEventListener('touchstart', handleTouchStart, { passive: false });
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd, { passive: false });
+    }
+
+    return () => {
+      document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [showSettings]);
 
   const tabs = [
     { id: 'models', label: 'Models', icon: Brain },
@@ -59,6 +133,7 @@ const Settings = ({ onClose }) => {
   const handleSavePreferences = () => {
     actions.updateUserPreferences(preferences);
     actions.showSuccess('Settings saved successfully!');
+    handleClose();
   };
 
   const handleResetPreferences = () => {
@@ -319,65 +394,72 @@ const Settings = ({ onClose }) => {
   };
 
   return (
-    <div 
-      className="fixed inset-0 z-50 overflow-y-auto mobile-safe-area"
-      style={{
-        zIndex: 50000,
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        backdropFilter: 'blur(4px)'
-      }}
-    >
+    <>
+      {/* Enhanced Backdrop Overlay with Mobile Touch Support */}
       <div 
-        className="flex min-h-screen items-start md:items-center justify-center p-2 md:p-4" 
+        className={`fixed inset-0 z-40 bg-black/50 backdrop-blur-sm transition-opacity duration-300 cursor-pointer touch-manipulation ${
+          showSettings ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}
         onClick={handleBackdropClick}
-        style={{ minHeight: '100vh' }}
+        onTouchEnd={handleBackdropTouch}
+        style={{ zIndex: 49999 }}
+        aria-label="Close settings"
+        role="button"
+        tabIndex={showSettings ? 0 : -1}
+      />
+      
+      {/* Settings Sidebar Panel */}
+      <div 
+        className={`settings-sidebar fixed top-0 right-0 h-full w-full sm:w-96 lg:w-[28rem] transform transition-transform duration-300 ease-in-out z-50 flex flex-col ${
+          showSettings ? 'translate-x-0' : 'translate-x-full'
+        }`}
+        style={{ zIndex: 50000, height: '100vh', maxHeight: '100vh' }}
+        onClick={handleSidebarClick}
+        onTouchEnd={handleSidebarClick}
       >
-        <div 
-          className="relative w-full bg-white dark:bg-gray-800 rounded-none md:rounded-2xl shadow-2xl overflow-hidden flex flex-col"
-          style={{
-            width: '100%',
-            maxWidth: 'min(100vw, 56rem)',
-            height: '100vh',
-            maxHeight: '100vh'
-          }}
-          onClick={(e) => e.stopPropagation()}
-        >
-        {/* Header - Mobile Optimized */}
-        <div className="flex items-center justify-between p-4 md:p-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-700 dark:to-gray-800 flex-shrink-0">
-          <div className="flex items-center gap-2 md:gap-3">
-            <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
-              <SettingsIcon className="w-4 h-4 md:w-5 md:h-5 text-white" />
+        {/* Sidebar Header */}
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-gray-800 dark:to-gray-900 flex-shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+              <SettingsIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white">Settings</h2>
-              <p className="text-xs md:text-sm text-gray-600 dark:text-gray-300 hidden sm:block">Configure your AI model preferences</p>
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">Settings</h2>
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 hidden sm:block">Configure your preferences</p>
+              {/* Mobile close instruction */}
+              <p className="text-xs text-blue-600 dark:text-blue-400 sm:hidden mt-1">Tap ✕ or outside to close</p>
             </div>
           </div>
           <button
-            onClick={onClose}
-            className="w-10 h-10 md:w-8 md:h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors touch-manipulation"
+            onClick={handleClose}
+            className="settings-close-btn w-12 h-12 sm:w-10 sm:h-10 flex items-center justify-center rounded-xl transition-all touch-manipulation touch-target relative group"
+            aria-label="Close settings"
+            style={{ zIndex: 1001 }}
           >
-            <X className="w-6 h-6 md:w-5 md:h-5 text-gray-500 dark:text-gray-400" />
+            {/* Ultra high contrast icon for mobile */}
+            <X className="w-7 h-7 sm:w-5 sm:h-5 text-gray-900 dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors relative z-10 font-bold stroke-[2.5] sm:stroke-2" />
+            
+            {/* Mobile visibility enhancement outline */}
+            <div className="absolute inset-0 rounded-xl border border-gray-400 dark:border-gray-300 opacity-50 sm:hidden"></div>
+            
+            {/* Hover ring effect */}
+            <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-red-300 dark:group-hover:border-red-500 transition-colors"></div>
           </button>
         </div>
 
-        {/* Mobile Tab Navigation - Horizontal Scroll */}
-        <div className="md:hidden border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex-shrink-0">
-          <div className="flex overflow-x-auto scrollbar-hide p-2 gap-1">
+        {/* Mobile Tab Navigation */}
+        <div className="sm:hidden border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex-shrink-0">
+          <div className="settings-tab-navigation flex overflow-x-auto p-2 gap-1">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-shrink-0 flex flex-col items-center gap-1 px-3 py-2 rounded-lg text-center transition-colors min-w-[80px] touch-manipulation ${
+                  className={`flex-shrink-0 flex flex-col items-center gap-1 px-4 py-3 rounded-lg transition-colors min-w-[80px] touch-manipulation touch-target ${
                     activeTab === tab.id
-                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-700'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                      ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
                   <Icon className="w-5 h-5" />
@@ -388,53 +470,49 @@ const Settings = ({ onClose }) => {
           </div>
         </div>
 
-        <div className="flex flex-1 overflow-hidden">
-          {/* Desktop Sidebar - Hidden on Mobile */}
-          <div className="hidden md:block w-64 bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 overflow-y-auto flex-shrink-0">
-            <div className="p-4">
-              <nav className="space-y-2">
-                {tabs.map((tab) => {
-                  const Icon = tab.icon;
-                  return (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left transition-colors ${
-                        activeTab === tab.id
-                          ? 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-700'
-                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                      }`}
-                    >
-                      <Icon className="w-5 h-5" />
-                      <span className="font-medium">{tab.label}</span>
-                    </button>
-                  );
-                })}
-              </nav>
-            </div>
-          </div>
-
-          {/* Content - Mobile Optimized */}
-          <div className="flex-1 overflow-y-auto bg-white dark:bg-gray-800">
-            <div className="p-4 md:p-6 pb-20 md:pb-6">
-              {renderTabContent()}
-            </div>
+        {/* Desktop Tab Navigation */}
+        <div className="hidden sm:block border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex-shrink-0">
+          <div className="flex">
+            {tabs.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-3 px-6 py-4 transition-colors flex-1 ${
+                    activeTab === tab.id
+                      ? 'bg-white dark:bg-gray-900 text-blue-700 dark:text-blue-300 border-b-2 border-blue-500'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  <span className="text-sm font-medium">{tab.label}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Footer - Mobile Optimized */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-0 p-4 md:p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex-shrink-0">
+        {/* Content Area */}
+        <div className="flex-1 overflow-y-auto">
+          <div className="settings-content p-4 sm:p-6 pb-20 sm:pb-6">
+            {renderTabContent()}
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 p-4 sm:p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex-shrink-0">
           <button
             onClick={handleResetPreferences}
             className="flex items-center justify-center gap-2 px-4 py-3 sm:py-2 text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors touch-manipulation text-sm font-medium"
           >
             <RotateCcw className="w-4 h-4" />
-            Reset to Defaults
+            Reset Defaults
           </button>
           
           <div className="flex flex-col sm:flex-row gap-3">
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="px-4 py-3 sm:py-2 text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors touch-manipulation text-sm font-medium"
             >
               Cancel
@@ -449,8 +527,7 @@ const Settings = ({ onClose }) => {
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </>
   );
 };
 

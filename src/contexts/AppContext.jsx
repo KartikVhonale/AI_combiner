@@ -29,7 +29,7 @@ const initialState = {
     comparisonView: 'side-by-side'
   },
   
-  // UI state
+  // UI state - sidebar closed by default, especially on mobile
   sidebarOpen: false,
   error: null,
   success: null

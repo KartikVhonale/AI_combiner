@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { useTheme } from '../contexts/ThemeContext';
-import { Menu, Save, AlertCircle, CheckCircle, X, Moon, Sun, Monitor, Settings as SettingsIcon } from 'lucide-react';
+import { Menu, Save, AlertCircle, CheckCircle, X, Moon, Sun, Monitor, Settings as SettingsIcon, MessageSquare, EyeOff } from 'lucide-react';
 import Settings from './Settings';
 
 const Header = () => {
   const { state, actions } = useAppContext();
   const { theme, toggleTheme, isDark } = useTheme();
   const [showSettings, setShowSettings] = useState(false);
+  const [chatHidden, setChatHidden] = useState(false);
 
   const handleSaveConversation = () => {
     if (state.messages.length > 0) {
@@ -16,24 +17,63 @@ const Header = () => {
     }
   };
 
+  const handleToggleSidebar = () => {
+    // Notify App component about manual sidebar toggle
+    window.dispatchEvent(new CustomEvent('manualSidebarToggle'));
+    
+    // Save desktop sidebar preference when toggled
+    if (window.innerWidth >= 768) {
+      const newState = !state.sidebarOpen;
+      localStorage.setItem('sidebarOpenDesktop', newState.toString());
+    }
+    actions.toggleSidebar();
+  };
+
+  const handleToggleChat = () => {
+    setChatHidden(!chatHidden);
+    // Dispatch custom event to notify App component
+    window.dispatchEvent(new CustomEvent('toggleChat', { detail: { hidden: !chatHidden } }));
+  };
+
   return (
     <>
-      <header className="header bg-white border-b border-gray-200 px-4 py-3">
+      <header className="header bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Left Section */}
           <div className="flex items-center gap-4">
+            {/* Hamburger Menu Button - Visible on all screen sizes */}
             <button
-              onClick={actions.toggleSidebar}
-              className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition-colors md:hidden"
+              onClick={handleToggleSidebar}
+              className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 
+                hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-all duration-200 
+                border border-transparent hover:border-gray-300 dark:hover:border-gray-600
+                min-w-[40px] min-h-[40px] flex items-center justify-center"
+              title="Toggle Sidebar"
             >
               <Menu className="w-5 h-5" />
             </button>
             
-            <div className="hidden md:block">
-              <h1 className="text-xl font-semibold text-gray-900">
+            {/* Mobile Chat Toggle Button - Only visible on mobile */}
+            <button
+              onClick={handleToggleChat}
+              className="md:hidden p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 
+                hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-all duration-200 
+                border border-transparent hover:border-gray-300 dark:hover:border-gray-600
+                min-w-[40px] min-h-[40px] flex items-center justify-center"
+              title={chatHidden ? 'Show Chat' : 'Hide Chat'}
+            >
+              {chatHidden ? (
+                <MessageSquare className="w-5 h-5" />
+              ) : (
+                <EyeOff className="w-5 h-5" />
+              )}
+            </button>
+            
+            <div className="hidden sm:block">
+              <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
                 AI Model Combiner
               </h1>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 Compare responses from multiple AI models
               </p>
             </div>
