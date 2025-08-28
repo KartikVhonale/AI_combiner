@@ -17,7 +17,9 @@ import {
   Check,
   X,
   ChevronDown,
-  Search
+  Search,
+  Github,
+  ExternalLink
 } from 'lucide-react';
 import ModelSelector from './ModelSelector';
 import APIKeyManager from './APIKeyManager';
@@ -382,6 +384,49 @@ const Settings = ({ onClose }) => {
                       </p>
                     </div>
                   </label>
+                </div>
+              </div>
+
+              {/* About Section */}
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 md:p-6 rounded-xl border border-gray-200 dark:border-gray-700">
+                <h4 className="text-base font-medium text-gray-700 dark:text-gray-300 mb-4">About</h4>
+                <div className="space-y-4">
+                  <div>
+                    <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-2">AI Model Combiner</h5>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                      A powerful tool to compare responses from multiple AI models simultaneously. 
+                      This application helps you evaluate and compare different AI models' outputs to make better decisions.
+                    </p>
+                  </div>
+                  
+                  <div className="pt-4 border-t border-gray-200 dark:border-gray-600">
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2">
+                        <Github className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Source Code:</span>
+                      </div>
+                      <a
+                        href="https://github.com/KartikVhonale/AI_combiner.git"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors group"
+                      >
+                        <span className="border-b border-transparent group-hover:border-current transition-all">
+                          GitHub Repository
+                        </span>
+                        <ExternalLink className="w-3 h-3 opacity-70 group-hover:opacity-100 transition-opacity" />
+                      </a>
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-2 ml-6">
+                      View the source code, contribute, or report issues
+                    </p>
+                  </div>
+                  
+                  <div className="pt-4 border-t border-gray-200 dark:border-gray-600">
+                    <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                      Built with React + Vite • Powered by OpenRouter API
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
