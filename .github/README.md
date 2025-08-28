@@ -1,11 +1,41 @@
-# GitHub Templates Directory
+# GitHub Repository Structure
 
-This directory contains templates for GitHub issues and pull requests to maintain consistency and provide helpful guidance for contributors.
+This repository contains all the necessary templates and configurations for GitHub collaboration.
 
-## Files in this directory:
+## 📁 Directory Structure
 
-- `ISSUE_TEMPLATE/` - Issue templates for different types of reports
-- `PULL_REQUEST_TEMPLATE.md` - Template for pull requests
-- `FUNDING.yml` - GitHub Sponsors configuration (if applicable)
+```
+.github/
+├── ISSUE_TEMPLATE/
+│   ├── bug_report.md
+│   └── feature_request.md
+├── pull_request_template.md
+└── README.md (this file)
+```
 
-These templates help ensure that issues and PRs contain all necessary information for efficient collaboration.
+## 📋 Templates
+
+### Issue Templates
+- **Bug Report**: Template for reporting bugs and issues
+- **Feature Request**: Template for suggesting new features
+
+### Pull Request Template
+Standard template for submitting pull requests with:
+- Description of changes
+- Type of change
+- Checklist for contributors
+- Testing instructions
+
+## 🤝 Contributing
+
+When contributing to this repository, please use the provided templates to ensure consistency and provide all necessary information for efficient collaboration.
+
+## 📄 License
+
+See the main [LICENSE](../LICENSE) file for licensing information.
+
+## 📞 Support
+
+For issues with the repository structure or templates:
+- Open an issue using the appropriate template
+- Contact the repository maintainers

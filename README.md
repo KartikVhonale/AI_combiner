@@ -1,6 +1,15 @@
 # 🤖 AI Model Comparison Chat Interface
 
+[![React](https://img.shields.io/badge/React-19.1.1-61DAFB?style=flat-square&logo=react)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-7.1.2-646CFF?style=flat-square&logo=vite)](https://vitejs.dev/)
+[![License](https://img.shields.io/github/license/your-username/ai-model-comparison?style=flat-square)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](CONTRIBUTING.md)
+
 A professional, modern chat interface that allows users to compare responses from multiple AI models simultaneously. Built with React, Vite, and featuring a beautiful glass morphism design with comprehensive comparison views.
+
+<p align="center">
+  <img src="https://placehold.co/800x400/8B5CF6/FFFFFF?text=AI+Model+Comparison+Interface" alt="AI Model Comparison Interface" width="100%">
+</p>
 
 ## ✨ Features
 
@@ -25,31 +34,37 @@ A professional, modern chat interface that allows users to compare responses fro
 - **Visual Indicators**: Clear distinction between free and paid models
 - **Markdown Support**: Rich text formatting with code syntax highlighting
 
+## 📸 Screenshots
+
+<p align="center">
+  <img src="https://placehold.co/400x300/8B5CF6/FFFFFF?text=Desktop+View" alt="Desktop View" width="45%">
+  <img src="https://placehold.co/200x300/06B6D4/FFFFFF?text=Mobile+View" alt="Mobile View" width="45%">
+</p>
+
 ## 🏗️ Technology Stack
 
-- **Frontend Framework**: React 19.1.1
-- **Build Tool**: Vite 7.1.2
+- **Frontend Framework**: [React 19.1.1](https://reactjs.org/)
+- **Build Tool**: [Vite 7.1.2](https://vitejs.dev/)
 - **Styling**: Custom CSS with Glass Morphism
-- **Icons**: Lucide React
-- **HTTP Client**: Axios
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **HTTP Client**: [Axios](https://axios-http.com/)
 - **State Management**: React Context
 - **Storage**: Local Storage for persistence
-- **AI API**: OpenRouter API
-- **Markdown Rendering**: React Markdown + React Syntax Highlighter
+- **AI API**: [OpenRouter API](https://openrouter.ai/)
 
-## 📦 Installation
+## 📦 Getting Started
 
 ### Prerequisites
 - Node.js (v16 or higher)
 - npm or yarn
 - OpenRouter API key (get it from [OpenRouter](https://openrouter.ai/))
 
-### Setup
+### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd AI_combined/frontend
+   git clone https://github.com/your-username/ai-model-comparison.git
+   cd ai-model-comparison/frontend
    ```
 
 2. **Install dependencies**
@@ -65,36 +80,23 @@ A professional, modern chat interface that allows users to compare responses fro
 4. **Open your browser**
    Navigate to `http://localhost:5173`
 
-## 🔧 How to Run the Project
+### Available Scripts
 
-### Development Mode
-To run the project in development mode with hot reloading:
 ```bash
+# Development server with hot reload
 npm run dev
-```
-This will start the Vite development server on `http://localhost:5173` with hot module replacement.
 
-### Production Build
-To create a production build:
-```bash
+# Build for production
 npm run build
-```
-This will generate optimized static files in the `dist/` directory.
 
-### Preview Production Build
-To preview the production build locally:
-```bash
+# Preview production build
 npm run preview
-```
-This will serve the production build on `http://localhost:4173`.
 
-### Linting
-To check for code quality issues:
-```bash
+# Run ESLint
 npm run lint
 ```
 
-## 🔑 Configuration
+## 🔧 Configuration
 
 ### API Key Setup
 1. Get your OpenRouter API key from [OpenRouter](https://openrouter.ai/)
@@ -120,11 +122,6 @@ npm run lint
 - **Desktop**: Up to 4-column grid for comprehensive comparisons
 - **Large Screens**: Enhanced spacing and typography
 
-### Animation System
-- Smooth slide-in effects for messages
-- Fade transitions between comparison views
-- Interactive hover states and micro-interactions
-
 ## 📱 Usage
 
 ### Getting Started
@@ -136,27 +133,6 @@ npm run lint
 - **Side-by-Side**: Perfect for detailed response analysis
 - **Stacked**: Great for reading longer responses sequentially
 - **Tabbed**: Clean interface for focused model comparison
-
-### Conversation Management
-- Conversations auto-save to local storage
-- Load previous conversations from history
-- Chronological message ordering (User → AI responses → User → AI responses)
-
-## 🏃‍♂️ Available Scripts
-
-```bash
-# Development server with hot reload
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Run ESLint
-npm run lint
-```
 
 ## 📊 Supported AI Models
 
@@ -174,65 +150,21 @@ npm run lint
 - **Perplexity**: Sonar models
 - **And many more...**
 
-## 🛡️ Features
+## 🛡️ Security & Privacy
 
-### Security
+### Data Handling
 - API keys stored securely in local storage
 - No server-side data persistence
-- Client-side encryption for sensitive data
+- Client-side only processing
 
-### Performance
-- Optimized React components with proper memoization
-- Efficient state management with Context API
-- Responsive images and lazy loading
-- Minimal bundle size with tree shaking
-
-### Accessibility
-- Keyboard navigation support
-- Screen reader friendly
-- High contrast mode compatibility
-- Touch-friendly mobile interface
-
-## 🔧 Customization
-
-### Theme Customization
-Modify CSS variables in `src/App.css` for custom colors:
-```css
-:root {
-  --color-primary-500: #8b5cf6;
-  --color-secondary-500: #06b6d4;
-  --radius-lg: 12px;
-}
-```
-
-### Adding New Features
-1. Create components in `src/components/`
-2. Add context providers in `src/contexts/`
-3. Implement services in `src/services/`
-4. Update styling in `src/App.css`
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
-
-## 📞 Support
-
-For issues and questions:
-- Open an issue on GitHub
-- Check the documentation
-- Review the code comments
+### Best Practices
+- Never commit API keys to version control
+- Use environment variables for sensitive data
+- Regular security audits of dependencies
 
 ## 🚀 Deployment
 
-### Build for Production
+### Production Build
 ```bash
 npm run build
 ```
@@ -242,6 +174,55 @@ npm run build
 - **Netlify**: Drag and drop the `dist` folder
 - **GitHub Pages**: Use GitHub Actions for CI/CD
 
+## 🤝 Contributing
+
+We love contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) for details on:
+
+- Code of Conduct
+- How to submit pull requests
+- Coding standards
+- Development workflow
+- Reporting issues
+
+### Quick Start for Contributors
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- [OpenRouter](https://openrouter.ai/) for providing access to multiple AI models
+- [React](https://reactjs.org/) for the amazing UI library
+- [Vite](https://vitejs.dev/) for the blazing fast build tool
+- All the open-source libraries and tools that made this project possible
+
+## 📞 Support
+
+If you encounter any issues or have questions:
+- Check the [Documentation](#documentation)
+- [Open an issue](https://github.com/your-username/ai-model-comparison/issues/new/choose)
+- Review the [Contributing Guidelines](CONTRIBUTING.md)
+
 ---
 
-**Made with ❤️ using React + Vite**
+<p align="center">
+  <a href="https://github.com/your-username/ai-model-comparison/stargazers">
+    <img src="https://img.shields.io/github/stars/your-username/ai-model-comparison?style=social" alt="GitHub Stars">
+  </a>
+  <a href="https://github.com/your-username/ai-model-comparison/network/members">
+    <img src="https://img.shields.io/github/forks/your-username/ai-model-comparison?style=social" alt="GitHub Forks">
+  </a>
+  <a href="https://github.com/your-username/ai-model-comparison/issues">
+    <img src="https://img.shields.io/github/issues/your-username/ai-model-comparison?style=social" alt="GitHub Issues">
+  </a>
+</p>
+
+<p align="center">
+  Made with ❤️ using React + Vite
+</p>
