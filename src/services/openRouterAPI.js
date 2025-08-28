@@ -55,9 +55,14 @@ class OpenRouterAPI {
         // Filter out invalid models
         return model.id && !model.id.includes(':') && model.name;
       }).sort((a, b) => {
-        // Sort: free models first, then by popularity
+        // Sort: free models first, then by category and name
         if (a.isFree && !b.isFree) return -1;
         if (!a.isFree && b.isFree) return 1;
+        
+        // Within same pricing tier, sort by category then name
+        if (a.category !== b.category) {
+          return a.category.localeCompare(b.category);
+        }
         return a.name.localeCompare(b.name);
       });
 
@@ -70,18 +75,26 @@ class OpenRouterAPI {
 
   // Helper functions for model categorization
   isFreeModel(model) {
-    const freeKeywords = ['free', 'gemma', 'llama-3.1-8b', 'mistral-7b', 'qwen', 'phi-3'];
+    const freeKeywords = [
+      'free', ':free', 'gemma', 'llama-3.1-8b', 'llama-3-8b', 'mistral-7b', 
+      'qwen', 'phi-3', 'phi-3-mini', 'mixtral-8x7b', 'codestral-mamba',
+      'deepseek-coder', 'nous-hermes', 'openchat', 'toppy-m'
+    ];
     const modelId = model.id.toLowerCase();
     const pricing = model.pricing || {};
     
-    // Check if explicitly free
+    // Check if explicitly marked as free in model ID
     if (freeKeywords.some(keyword => modelId.includes(keyword))) {
       return true;
     }
     
-    // Check if pricing is 0 or very low
+    // Check if pricing is 0 or very low (free tier)
     const promptPrice = parseFloat(pricing.prompt || 0);
-    return promptPrice === 0 || promptPrice < 0.00001;
+    const completionPrice = parseFloat(pricing.completion || 0);
+    
+    // Consider free if both prompt and completion prices are 0 or extremely low
+    return (promptPrice === 0 && completionPrice === 0) || 
+           (promptPrice < 0.000001 && completionPrice < 0.000001);
   }
 
   getModelCategory(modelId) {
@@ -112,7 +125,7 @@ class OpenRouterAPI {
       {
         id: 'meta-llama/llama-3.1-8b-instruct:free',
         name: 'Llama 3.1 8B (Free)',
-        description: 'Meta\'s open-source model, free tier',
+        description: 'Meta\'s latest open-source model with excellent performance, completely free',
         context_length: 131072,
         isFree: true,
         promptPrice: 0,
@@ -123,7 +136,7 @@ class OpenRouterAPI {
       {
         id: 'microsoft/phi-3-mini-128k-instruct:free',
         name: 'Phi 3 Mini (Free)',
-        description: 'Microsoft\'s compact model, free tier',
+        description: 'Microsoft\'s efficient small language model, optimized for speed and quality',
         context_length: 128000,
         isFree: true,
         promptPrice: 0,
@@ -134,7 +147,7 @@ class OpenRouterAPI {
       {
         id: 'google/gemma-2-9b-it:free',
         name: 'Gemma 2 9B (Free)',
-        description: 'Google\'s open model, free tier',
+        description: 'Google\'s latest Gemma model with improved reasoning capabilities',
         context_length: 8192,
         isFree: true,
         promptPrice: 0,
@@ -142,11 +155,34 @@ class OpenRouterAPI {
         category: 'Google',
         provider: 'google'
       },
+      {
+        id: 'mistralai/mistral-7b-instruct:free',
+        name: 'Mistral 7B (Free)',
+        description: 'High-quality multilingual model from Mistral AI, available for free',
+        context_length: 32768,
+        isFree: true,
+        promptPrice: 0,
+        completionPrice: 0,
+        category: 'Mistral',
+        provider: 'mistralai'
+      },
+      {
+        id: 'huggingfaceh4/zephyr-7b-beta:free',
+        name: 'Zephyr 7B Beta (Free)',
+        description: 'Community-fine-tuned model based on Mistral with strong performance',
+        context_length: 32768,
+        isFree: true,
+        promptPrice: 0,
+        completionPrice: 0,
+        category: 'Hugging Face',
+        provider: 'huggingfaceh4'
+      },
+      
       // Premium Models
       {
         id: 'anthropic/claude-3.5-sonnet',
         name: 'Claude 3.5 Sonnet',
-        description: 'Anthropic\'s most capable model',
+        description: 'Anthropic\'s most capable model with superior reasoning and coding abilities',
         context_length: 200000,
         isFree: false,
         promptPrice: 0.000003,
@@ -157,7 +193,7 @@ class OpenRouterAPI {
       {
         id: 'openai/gpt-4o',
         name: 'GPT-4o',
-        description: 'OpenAI\'s flagship multimodal model',
+        description: 'OpenAI\'s flagship multimodal model with excellent performance across tasks',
         context_length: 128000,
         isFree: false,
         promptPrice: 0.0000025,
@@ -168,7 +204,7 @@ class OpenRouterAPI {
       {
         id: 'google/gemini-pro-1.5',
         name: 'Gemini Pro 1.5',
-        description: 'Google\'s advanced reasoning model',
+        description: 'Google\'s advanced reasoning model with massive context window',
         context_length: 1000000,
         isFree: false,
         promptPrice: 0.00000125,
@@ -179,7 +215,7 @@ class OpenRouterAPI {
       {
         id: 'meta-llama/llama-3.1-405b-instruct',
         name: 'Llama 3.1 405B',
-        description: 'Meta\'s largest open-source model',
+        description: 'Meta\'s largest and most capable open-source model',
         context_length: 131072,
         isFree: false,
         promptPrice: 0.000005,
@@ -190,13 +226,24 @@ class OpenRouterAPI {
       {
         id: 'mistralai/mistral-large',
         name: 'Mistral Large',
-        description: 'Mistral\'s flagship model',
+        description: 'Mistral\'s flagship model with top-tier performance',
         context_length: 128000,
         isFree: false,
         promptPrice: 0.000004,
         completionPrice: 0.000012,
         category: 'Mistral',
         provider: 'mistralai'
+      },
+      {
+        id: 'anthropic/claude-3-haiku',
+        name: 'Claude 3 Haiku',
+        description: 'Fast and affordable model from Anthropic, great for simple tasks',
+        context_length: 200000,
+        isFree: false,
+        promptPrice: 0.00000025,
+        completionPrice: 0.00000125,
+        category: 'Anthropic',
+        provider: 'anthropic'
       }
     ];
   }

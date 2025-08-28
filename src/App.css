@@ -740,6 +740,178 @@ textarea:focus-visible {
   left: 100%;
 }
 
+/* Mobile Model Dropdown Modal Behavior */
+@media (max-width: 767px) {
+  /* Mobile Dropdown Modal Overlay */
+  .model-selector .mobile-dropdown-modal {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 420px !important;
+    max-height: 80vh !important;
+    z-index: 2147483647 !important;  /* Maximum z-index value */
+    border-radius: 16px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(20px) !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    margin: 0 !important;
+    animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  [data-theme="dark"] .model-selector .mobile-dropdown-modal {
+    background: rgba(30, 41, 59, 0.98) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6) !important;
+  }
+  
+  /* Ensure backdrop appears behind modal but above Settings */
+  .model-selector .fixed.inset-0 {
+    z-index: 2147483646 !important;  /* One less than modal for proper layering */
+    animation: backdropFadeIn 0.3s ease;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+  }
+  
+  /* Improve backdrop interaction */
+  .model-selector .fixed.inset-0:active {
+    background: rgba(0, 0, 0, 0.6) !important;
+  }
+  
+  /* Ensure modal is not clipped by parent containers */
+  .model-selector {
+    position: relative !important;
+    z-index: auto !important; /* Don't interfere with children z-index */
+  }
+  
+  /* Force modal container to break out of parent stacking context */
+  .model-selector > div:last-child {
+    position: static !important;
+  }
+  
+  /* Override any parent overflow settings on mobile */
+  @supports (position: fixed) {
+    .model-selector .mobile-dropdown-modal {
+      position: fixed !important;
+      /* Force modal to be above everything */
+      z-index: 999999 !important;
+    }
+  }
+  
+  /* Mobile Search Input */
+  .model-selector .mobile-search-input {
+    min-height: 48px !important;
+    font-size: 16px !important; /* Prevents zoom on iOS */
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+    touch-action: manipulation;
+  }
+  
+  /* Mobile Model Items */
+  .model-selector .mobile-model-item {
+    min-height: 60px !important;
+    padding: 16px !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    border-radius: 8px;
+    margin: 4px 8px;
+    background: rgba(248, 250, 252, 0.5);
+    border: 1px solid rgba(226, 232, 240, 0.5) !important;
+    transition: all 0.2s ease;
+  }
+  
+  .model-selector .mobile-model-item:active {
+    transform: scale(0.98);
+    background: rgba(99, 102, 241, 0.1) !important;
+  }
+  
+  [data-theme="dark"] .model-selector .mobile-model-item {
+    background: rgba(51, 65, 85, 0.5) !important;
+    border-color: rgba(100, 116, 139, 0.3) !important;
+  }
+  
+  /* Modal Animation */
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -60%) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+  
+  @keyframes backdropFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  /* Mobile Dropdown Trigger */
+  .model-selector .mobile-dropdown-trigger {
+    min-height: 48px !important;
+    font-size: 16px !important;
+    padding: 12px 16px !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    border-radius: 12px !important;
+    transition: all 0.2s ease;
+  }
+  
+  .model-selector .mobile-dropdown-trigger:active {
+    transform: scale(0.98);
+    background-color: rgba(99, 102, 241, 0.05);
+  }
+  
+  /* Prevent iOS zoom on input focus */
+  .model-selector input[type="text"],
+  .model-selector select {
+    font-size: 16px !important;
+  }
+  
+  /* Mobile Scrollable Area */
+  .model-selector .mobile-scrollable {
+    max-height: 60vh !important;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  .model-selector .mobile-scrollable::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .model-selector .mobile-scrollable::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.5);
+    border-radius: 2px;
+  }
+  
+  .model-selector .mobile-scrollable::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  /* Smooth mobile interactions */
+  .model-selector * {
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Improve mobile touch targets */
+  .model-selector button,
+  .model-selector input,
+  .model-selector select {
+    min-height: 44px;
+  }
+}
+
 /* Beautiful model selector */
 .model-selector {
   background: linear-gradient(135deg, 
@@ -3682,6 +3854,148 @@ input[type="checkbox"] {
     padding: 16px;
   }
   
+  /* Mobile-Optimized Model Dropdown */
+  .model-selector .relative > div[class*="absolute"] {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: calc(100vw - 32px) !important;
+    max-width: 420px !important;
+    max-height: 80vh !important;
+    z-index: 9999 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(20px) !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  }
+  
+  [data-theme="dark"] .model-selector .relative > div[class*="absolute"] {
+    background: rgba(30, 41, 59, 0.98) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6) !important;
+  }
+  
+  /* Mobile Dropdown Overlay */
+  .model-selector .relative::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+  
+  .model-selector .relative:has(div[class*="absolute"]) .relative::before {
+    opacity: 1;
+    pointer-events: all;
+  }
+  
+  /* Mobile Search Input */
+  .model-selector input[type="text"] {
+    min-height: 48px !important;
+    font-size: 16px !important; /* Prevents zoom on iOS */
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+    touch-action: manipulation;
+  }
+  
+  /* Mobile Model Items */
+  .model-selector button[class*="w-full text-left"] {
+    min-height: 60px !important;
+    padding: 16px !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    border-radius: 8px;
+    margin: 4px 8px;
+    background: rgba(248, 250, 252, 0.5);
+    border: 1px solid rgba(226, 232, 240, 0.5);
+    transition: all 0.2s ease;
+  }
+  
+  .model-selector button[class*="w-full text-left"]:active {
+    transform: scale(0.98);
+    background: rgba(99, 102, 241, 0.1);
+  }
+  
+  [data-theme="dark"] .model-selector button[class*="w-full text-left"] {
+    background: rgba(51, 65, 85, 0.5);
+    border-color: rgba(100, 116, 139, 0.3);
+  }
+  
+  /* Mobile Group Headers */
+  .model-selector div[class*="px-3 py-2"][class*="bg-green-50"],
+  .model-selector div[class*="px-3 py-2"][class*="bg-blue-50"],
+  .model-selector div[class*="px-3 py-2"][class*="bg-gray-50"] {
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    margin: 0 8px;
+    border-radius: 8px 8px 0 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+  }
+  
+  /* Mobile Scrollable Area */
+  .model-selector div[class*="overflow-y-auto"] {
+    max-height: 60vh !important;
+    padding: 8px 0;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Mobile Pricing Filter */
+  .model-selector select {
+    min-height: 44px !important;
+    font-size: 16px !important;
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
+    touch-action: manipulation;
+  }
+  
+  /* Mobile Selected Model Tags */
+  .model-selector .selected-models > div > div {
+    min-height: 36px !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    touch-action: manipulation;
+    border-radius: 18px !important;
+  }
+  
+  /* Mobile Close Button in Tags */
+  .model-selector .selected-models button {
+    min-width: 24px !important;
+    min-height: 24px !important;
+    padding: 4px !important;
+    touch-action: manipulation;
+  }
+  
+  /* Mobile Stats and Labels */
+  .model-selector label,
+  .model-selector .text-xs {
+    font-size: 14px !important;
+    line-height: 1.4 !important;
+  }
+  
+  /* Mobile Model Badges */
+  .model-selector div[class*="rounded-full"][class*="text-xs"] {
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    min-height: 28px !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+  
   .api-key-manager {
     margin: 16px;
     padding: 24px;
@@ -3731,6 +4045,42 @@ input[type="checkbox"] {
     padding-top: 8px;
     padding-bottom: 8px;
   }
+  
+  /* Enhanced Mobile Model Dropdown */
+  .model-selector .relative > div[class*="absolute"] {
+    width: calc(100vw - 16px) !important;
+    max-height: 75vh !important;
+    top: 40% !important;
+    margin: 0 !important;
+  }
+  
+  /* Improved Mobile Model Items */
+  .model-selector button[class*="w-full text-left"] {
+    min-height: 56px !important;
+    padding: 14px !important;
+    margin: 2px 4px;
+  }
+  
+  /* Compact Mobile Stats */
+  .model-selector div[class*="text-xs text-gray-500"]:contains("free") {
+    font-size: 12px !important;
+  }
+  
+  /* Mobile Search Input Enhancement */
+  .model-selector input[type="text"]::placeholder {
+    font-size: 14px;
+    color: #9ca3af;
+  }
+  
+  /* Mobile Scrollbar */
+  .model-selector div[class*="overflow-y-auto"]::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  .model-selector div[class*="overflow-y-auto"]::-webkit-scrollbar-thumb {
+    background: rgba(156, 163, 175, 0.5);
+    border-radius: 2px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -3758,6 +4108,58 @@ input[type="checkbox"] {
   
   .conversation-item:hover {
     transform: translateY(-1px) scale(1.01);
+  }
+  
+  /* Ultra-Mobile Model Dropdown */
+  .model-selector .relative > div[class*="absolute"] {
+    width: calc(100vw - 8px) !important;
+    max-height: 70vh !important;
+    top: 35% !important;
+    border-radius: 12px !important;
+    margin: 0 !important;
+  }
+  
+  /* Compact Mobile Model Items */
+  .model-selector button[class*="w-full text-left"] {
+    min-height: 52px !important;
+    padding: 12px !important;
+    margin: 1px 2px;
+    border-radius: 6px;
+  }
+  
+  /* Smaller Mobile Badges */
+  .model-selector div[class*="rounded-full"][class*="text-xs"] {
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+    min-height: 24px !important;
+  }
+  
+  /* Compact Search Input */
+  .model-selector input[type="text"] {
+    min-height: 44px !important;
+    padding: 10px 14px !important;
+    font-size: 15px !important;
+  }
+  
+  /* Compact Selected Tags */
+  .model-selector .selected-models > div > div {
+    min-height: 32px !important;
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+    border-radius: 16px !important;
+  }
+  
+  /* Smaller Group Headers */
+  .model-selector div[class*="px-3 py-2"][class*="bg-green-50"],
+  .model-selector div[class*="px-3 py-2"][class*="bg-blue-50"],
+  .model-selector div[class*="px-3 py-2"][class*="bg-gray-50"] {
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+  }
+  
+  /* Adjust Scrollable Height */
+  .model-selector div[class*="overflow-y-auto"] {
+    max-height: 55vh !important;
   }
 }
 

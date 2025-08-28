@@ -23,6 +23,7 @@ A professional, modern chat interface that allows users to compare responses fro
 - **Conversation Management**: Save, load, and manage multiple conversations
 - **Custom Settings**: Temperature, max tokens, and user preferences
 - **Visual Indicators**: Clear distinction between free and paid models
+- **Markdown Support**: Rich text formatting with code syntax highlighting
 
 ## 🏗️ Technology Stack
 
@@ -34,13 +35,14 @@ A professional, modern chat interface that allows users to compare responses fro
 - **State Management**: React Context
 - **Storage**: Local Storage for persistence
 - **AI API**: OpenRouter API
+- **Markdown Rendering**: React Markdown + React Syntax Highlighter
 
 ## 📦 Installation
 
 ### Prerequisites
 - Node.js (v16 or higher)
 - npm or yarn
-- OpenRouter API key
+- OpenRouter API key (get it from [OpenRouter](https://openrouter.ai/))
 
 ### Setup
 
@@ -62,6 +64,35 @@ A professional, modern chat interface that allows users to compare responses fro
 
 4. **Open your browser**
    Navigate to `http://localhost:5173`
+
+## 🔧 How to Run the Project
+
+### Development Mode
+To run the project in development mode with hot reloading:
+```bash
+npm run dev
+```
+This will start the Vite development server on `http://localhost:5173` with hot module replacement.
+
+### Production Build
+To create a production build:
+```bash
+npm run build
+```
+This will generate optimized static files in the `dist/` directory.
+
+### Preview Production Build
+To preview the production build locally:
+```bash
+npm run preview
+```
+This will serve the production build on `http://localhost:4173`.
+
+### Linting
+To check for code quality issues:
+```bash
+npm run lint
+```
 
 ## 🔑 Configuration
 
