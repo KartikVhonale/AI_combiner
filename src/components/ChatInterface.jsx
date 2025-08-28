@@ -3,6 +3,7 @@ import { useAppContext } from '../contexts/AppContext';
 import { Send, Loader, Copy, ThumbsUp, ThumbsDown, RotateCcw, Grid, Layers, Layout } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import openRouterAPI from '../services/openRouterAPI';
+import MarkdownRenderer from './MarkdownRenderer';
 
 const ChatInterface = () => {
   const { state, actions } = useAppContext();
@@ -275,12 +276,19 @@ const ChatInterface = () => {
             </div>
           ) : (
             <div className={isSideBySide ? 'flex flex-col h-full' : ''}>
-              <div className={`response-text whitespace-pre-wrap leading-relaxed ${
+              <div className={`response-text leading-relaxed ${
                 message.success === false 
                   ? 'text-red-600 dark:text-red-400' 
                   : 'text-gray-800 dark:text-gray-200'
               } ${isTabbed ? 'text-base' : isSideBySide ? 'text-sm flex-1 overflow-auto' : 'text-sm'}`}>
-                {message.content}
+                {message.success === false ? (
+                  <div className="whitespace-pre-wrap">{message.content}</div>
+                ) : (
+                  <MarkdownRenderer 
+                    content={message.content} 
+                    className={isTabbed ? 'text-base' : isSideBySide ? 'text-sm' : 'text-sm'}
+                  />
+                )}
               </div>
               
               {message.content && !message.error && (
@@ -356,9 +364,9 @@ const ChatInterface = () => {
                 <div className="space-y-2">
                   {[
                     "Explain quantum computing in simple terms",
-                    "Write a creative story about AI",
-                    "Compare React vs Vue.js",
-                    "Solve this math problem: 2x + 5 = 15"
+                    "Write a Python function to sort a list with code examples",
+                    "Compare React vs Vue.js with a feature table",
+                    "Create a markdown-formatted tutorial on JavaScript basics"
                   ].map((prompt, index) => (
                     <button
                       key={index}
@@ -449,8 +457,11 @@ const ChatInterface = () => {
                         
                         {/* Content */}
                         <div className="relative p-4 md:p-6">
-                          <div className="whitespace-pre-wrap text-gray-800 dark:text-gray-200 text-sm md:text-base leading-relaxed font-medium">
-                            {group.userMessage.content}
+                          <div className="text-gray-800 dark:text-gray-200 text-sm md:text-base leading-relaxed font-medium">
+                            <MarkdownRenderer 
+                              content={group.userMessage.content} 
+                              className="text-sm md:text-base font-medium"
+                            />
                           </div>
                           
                           {/* Decorative elements */}
