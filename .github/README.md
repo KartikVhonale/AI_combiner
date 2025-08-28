@@ -49,9 +49,9 @@ For issues with the repository structure or templates:
 
 A professional, modern chat interface that allows users to compare responses from multiple AI models simultaneously. Built with React, Vite, and featuring a beautiful glass morphism design with comprehensive comparison views.
 
-<p align="center">
+<!-- <p align="center">
   <img src="https://placehold.co/800x400/8B5CF6/FFFFFF?text=AI+Model+Comparison+Interface" alt="AI Model Comparison Interface" width="100%">
-</p>
+</p> -->
 
 ## ✨ Features
 
@@ -76,12 +76,12 @@ A professional, modern chat interface that allows users to compare responses fro
 - **Visual Indicators**: Clear distinction between free and paid models
 - **Markdown Support**: Rich text formatting with code syntax highlighting
 
-## 📸 Screenshots
+<!-- ## 📸 Screenshots
 
 <p align="center">
   <img src="https://placehold.co/400x300/8B5CF6/FFFFFF?text=Desktop+View" alt="Desktop View" width="45%">
   <img src="https://placehold.co/200x300/06B6D4/FFFFFF?text=Mobile+View" alt="Mobile View" width="45%">
-</p>
+</p> -->
 
 ## 🏗️ Technology Stack
 
