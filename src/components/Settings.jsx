@@ -425,6 +425,8 @@ const Settings = ({ onClose }) => {
                   <div className="pt-4 border-t border-gray-200 dark:border-gray-600">
                     <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
                       Built with React + Vite • Powered by OpenRouter API
+                      <br />
+                      by Kartik V.
                     </div>
                   </div>
                 </div>
