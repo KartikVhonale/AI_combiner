@@ -244,14 +244,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Vite](https://vitejs.dev/) for the blazing fast build tool
 - All the open-source libraries and tools that made this project possible
 
-## 📞 Support
-
-If you encounter any issues or have questions:
-- Check the [Documentation](#documentation)
-- [Open an issue](https://github.com/your-username/ai-model-comparison/issues/new/choose)
-- Review the [Contributing Guidelines](CONTRIBUTING.md)
-
----
 
 <p align="center">
   <a href="https://github.com/your-username/ai-model-comparison/stargazers">
